@@ -68,6 +68,19 @@ def flash_errors(form):
     for field, errors in form.errors.items():
         for error in errors:
             flash(u"Error in the %s field - %s" % (getattr(form, field).label.text,error),'danger')
+            
+@app.route('/secure-page/')
+@login_required
+def secure_page():
+    return render_template('secure_page.html')
+    
+@app.route("/logout")
+@login_required
+def logout():
+    # Logout the user and end the session
+    logout_user()
+    flash('You are out!!', 'danger')
+    return redirect(url_for('home'))
     
 @app.route('/<file_name>.txt')
 def send_text_file(file_name):
